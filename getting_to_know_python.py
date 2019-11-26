@@ -11,6 +11,18 @@ class knowPython():
     def __init__(this):
         pass
     def list_all_js_function_names(this, path):
+        """
+        Reads a javascript file from path and returns a list of dictionaries containing the following keys,
+        'name', 'start_row' and 'end_row' for each function in the Javascript file being read.
+        Where 'name' is the name of the function, 'row_start' is the line number where the function was defined,
+        and 'end_row' is line number where the function ends.
+
+        Parameters:
+        path (str): a path to the Javascript file to read
+
+        Returns:
+        list: A list of dictionaries for each function found in a passed Javascript file
+        """
         # this will be used to measure the performance of this algorithm
         start_time = time.time()
         f = open(path, mode="r")
@@ -31,11 +43,9 @@ class knowPython():
                 start_char_match = re.findall("\S",line)[0]
                 start_char_index = line.index(start_char_match)
                 # finding the  end_row
-                #print(dict)
                 while line_number < len(lines):
                     if '}' in lines[line_number]:
-                        closing_match = re.findall("\S", lines[line_number])[0]
-                        if lines[line_number].index(closing_match) == start_char_index:
+                        if lines[line_number].index("}") == start_char_index:
                             dict['end_row'] = line_number + 1
                             break
                     line_number += 1
@@ -52,8 +62,6 @@ class knowPython():
                 start_char_index = line.index(start_char_match)
                 for i in range(line_number, len(lines)):
                     if '}' in lines[i]:
-                        closing_match = re.findall("\S", lines[i])[0]
-                        #print(closing_match, line_number)
                         if lines[i].index("}") == start_char_index:
                             dict['row_end'] = i + 1
                             function_dictionary.append(dict)
@@ -66,7 +74,7 @@ class knowPython():
 
 def main():
     recruit = knowPython()
-    names = recruit.list_all_js_function_names("files/script.js")
+    names = recruit.list_all_js_function_names("files/script1.js")
     print(names)
 if __name__ == '__main__':
     main()
